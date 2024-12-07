@@ -32,6 +32,7 @@ fun HomeSearchBar(
 ) {
     Row(
         modifier = Modifier
+            .padding(top = 12.dp)
             .fillMaxWidth()
             .padding(16.dp)
             .height(56.dp)

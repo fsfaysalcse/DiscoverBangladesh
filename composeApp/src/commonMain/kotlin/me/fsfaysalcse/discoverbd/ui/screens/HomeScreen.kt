@@ -124,7 +124,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         }
 
 
-        Spacer(modifier = Modifier.size(30.dp))
 
         LazyColumn(
             modifier = Modifier.fillMaxWidth()

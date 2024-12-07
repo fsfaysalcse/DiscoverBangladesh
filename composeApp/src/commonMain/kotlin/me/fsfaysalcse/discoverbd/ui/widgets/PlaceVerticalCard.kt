@@ -46,7 +46,7 @@ fun PlaceVerticalCard(
     Card(
         modifier = Modifier
             .width(200.dp)
-            .height(300.dp),
+            .height(200.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
