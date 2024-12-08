@@ -76,3 +76,38 @@ val PACES2 = listOf(
     )
 )
 
+val PACES3 = listOf(
+    Place(
+        id = 1,
+        name = "Sylet",
+        distance = "12.3 km",
+        image = "https://images.unsplash.com/photo-1696347516329-5244eae4e5f1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGJhbmdsYWRlc2h8ZW58MHwxfDB8fHww"
+    ),
+    Place(
+        id = 2,
+        name = "Old Dhaka",
+        distance = "7.3 km",
+        image = "https://images.unsplash.com/photo-1632727136376-2d653c429e44?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    ),
+    Place(
+        id = 3,
+        name = "Satkhira",
+        distance = "120.3 km",
+        image = "https://images.unsplash.com/photo-1516911594441-ab64c0d553f0?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    ),
+    Place(
+        id = 4,
+        name = "Sundarbans",
+        distance = "120.3 km",
+        image = "https://wander-lush.org/wp-content/uploads/2022/03/Most-eautiful-places-in-Bangladesh-CP-Sundarbans-NP.jpg"
+    ),
+
+    Place(
+        id = 5,
+        name = "Keokradong",
+        distance = "120.3 km",
+        image = "https://wander-lush.org/wp-content/uploads/2022/03/Most-eautiful-places-in-Bangladesh-CP-Keokradong.jpg"
+    )
+)
+
+

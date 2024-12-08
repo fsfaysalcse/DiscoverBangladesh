@@ -1,6 +1,7 @@
 package me.fsfaysalcse.discoverbd.ui.widgets
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -32,6 +34,7 @@ import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
 import discoverbangladesh.composeapp.generated.resources.Res
 import discoverbangladesh.composeapp.generated.resources.bg_splash
+import discoverbangladesh.composeapp.generated.resources.ic_navigation
 import me.fsfaysalcse.discoverbd.ui.model.Place
 import me.fsfaysalcse.discoverbd.ui.theme.OrangeMain
 import me.fsfaysalcse.discoverbd.ui.theme.getOpenSansFont
@@ -39,16 +42,23 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PlaceVerticalCard(
-    place: Place
+    place: Place,
+    onPlaceClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .width(200.dp)
-            .height(200.dp),
+            .height(300.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable {
+                    onPlaceClick()
+                }
+        ) {
 
             CoilImage(
                 imageModel = { place.image },
@@ -84,13 +94,30 @@ fun PlaceVerticalCard(
                             overflow = TextOverflow.Ellipsis
                         )
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "📍 ${place.distance}",
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontFamily = getOpenSansFont()
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(
+                                painter = painterResource(Res.drawable.ic_navigation),
+                                contentDescription = null,
+                                tint = OrangeMain,
+                                modifier = Modifier.size(20.dp)
                             )
-                        )
+
+                            Text(
+                                text = "23.6 km",
+                                style = MaterialTheme.typography.bodySmall.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    fontFamily = getOpenSansFont(),
+                                    color = OrangeMain
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.padding(start = 10.dp)
+                            )
+                        }
                     }
                     IconButton(
                         onClick = { },

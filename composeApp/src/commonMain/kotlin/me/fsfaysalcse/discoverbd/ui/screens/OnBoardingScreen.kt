@@ -4,7 +4,19 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -19,18 +31,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import discoverbangladesh.composeapp.generated.resources.Res
-import discoverbangladesh.composeapp.generated.resources.bg_drawer
 import discoverbangladesh.composeapp.generated.resources.bg_splash
 import discoverbangladesh.composeapp.generated.resources.ic_double_arrow
+import me.fsfaysalcse.discoverbd.ui.navigation.Screen
 import me.fsfaysalcse.discoverbd.ui.theme.OrangeMain
 import me.fsfaysalcse.discoverbd.ui.theme.getNunitoFont
 import me.fsfaysalcse.discoverbd.ui.theme.getOpenSansFont
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun DiscoverFreedomScreen() {
+fun OnBoardingScreen(navController: NavHostController) {
     val animationValue = animateFloatAsState(
         targetValue = 1f,
         animationSpec = tween(durationMillis = 1000)
@@ -135,7 +147,14 @@ fun DiscoverFreedomScreen() {
                         .background(
                             color = OrangeMain,
                             shape = RoundedCornerShape(8.dp)
-                        ).padding(15.dp),
+                        ).clickable {
+                            navController.navigate(Screen.Dashboard.route) {
+                                popUpTo(Screen.OnBoarding.route) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                        .padding(15.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -147,10 +166,4 @@ fun DiscoverFreedomScreen() {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewDiscoverFreedomScreen() {
-    DiscoverFreedomScreen()
 }

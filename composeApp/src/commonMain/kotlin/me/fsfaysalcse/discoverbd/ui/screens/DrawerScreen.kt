@@ -34,6 +34,7 @@ import discoverbangladesh.composeapp.generated.resources.bg_drawer
 import me.fsfaysalcse.discoverbd.ui.model.DRAWER_ITEM
 import me.fsfaysalcse.discoverbd.ui.model.Drawer
 import me.fsfaysalcse.discoverbd.ui.theme.getNunitoFont
+import me.fsfaysalcse.discoverbd.ui.theme.getProductSansFont
 import me.fsfaysalcse.discoverbd.ui.widgets.DrawerItem
 import org.jetbrains.compose.resources.painterResource
 
@@ -63,40 +64,41 @@ fun DrawerScreen(
                 .padding(horizontal = 16.dp)
                 .align(Alignment.TopCenter),
         ) {
+
+            Text(
+                text = "Hey, Faysal Hossain".uppercase(),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                fontSize = 16.sp,
+                letterSpacing = 2.sp,
+                fontFamily = getNunitoFont(),
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier
+            )
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
                 Box(
-                    modifier = Modifier.height(2.dp).width(30.dp).background(
+                    modifier = Modifier.height(2.dp).width(20.dp).background(
                         color = MaterialTheme.colorScheme.onSurface,
                         shape = CircleShape
                     )
                 )
 
                 Text(
-                    text = "HEY, Good Morning",
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                    fontSize = 14.sp,
-                    letterSpacing = 2.sp,
-                    fontFamily = getNunitoFont(),
-                    fontWeight = FontWeight.Medium,
+                    text = "Good Evening",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 23.sp,
+                    fontFamily = getProductSansFont(),
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = 32.sp,
                     modifier = Modifier.padding(start = 10.dp)
                 )
+
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Faysal Hossain".uppercase(),
-                color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 23.sp,
-                fontFamily = getNunitoFont(),
-                fontWeight = FontWeight.Bold,
-                lineHeight = 32.sp,
-                modifier = Modifier
-            )
 
         }
 

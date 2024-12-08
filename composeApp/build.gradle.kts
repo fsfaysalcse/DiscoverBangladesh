@@ -46,6 +46,7 @@ kotlin {
 
 
             implementation(libs.landscapist.coil3)
+            implementation(libs.compose.navigation)
 
 
         }
