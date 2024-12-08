@@ -43,7 +43,8 @@ fun HomeCategory(
             Icon(
                 painter = painterResource(category.icon),
                 contentDescription = null,
-                modifier = Modifier.size(40.dp, 40.dp)
+                modifier = Modifier.size(40.dp, 40.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
 

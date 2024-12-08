@@ -2,7 +2,8 @@ package me.fsfaysalcse.discoverbd.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val OrangeMain = Color(0xFFFF5117)
+val OrangeMain = Color(0xFF153524)
+
 val md_theme_light_primary = Color(0xFFBF0031)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFFFDAD9)

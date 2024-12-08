@@ -1,5 +1,7 @@
 package me.fsfaysalcse.discoverbd.ui.screens
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -39,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -48,6 +50,7 @@ import discoverbangladesh.composeapp.generated.resources.ic_my_location
 import discoverbangladesh.composeapp.generated.resources.ic_nav_menu
 import discoverbangladesh.composeapp.generated.resources.ic_person
 import me.fsfaysalcse.discoverbd.ui.model.CATEGORIES
+import me.fsfaysalcse.discoverbd.ui.model.DrawerState
 import me.fsfaysalcse.discoverbd.ui.model.PACES2
 import me.fsfaysalcse.discoverbd.ui.model.PLACES
 import me.fsfaysalcse.discoverbd.ui.theme.OrangeMain
@@ -60,98 +63,146 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = Modifier
-            .statusBarsPadding()
-            .fillMaxSize()
+
+    var drawerState by remember {
+        mutableStateOf(DrawerState.OPEN)
+    }
+
+    val drawerWidth = 700f
+
+    val animatedTranslationX by animateFloatAsState(
+        targetValue = if (drawerState == DrawerState.OPEN) drawerWidth else 0f
+    )
+
+    val animatedScale by animateFloatAsState(
+        targetValue = if (drawerState == DrawerState.OPEN) 0.8f else 1f
+    )
+
+    val animatedCornerRadius by animateDpAsState(
+        targetValue = if (drawerState == DrawerState.OPEN) 32.dp else 0.dp
+    )
+
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Row(
+        DrawerScreen(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(horizontal = 16.dp)
-                .padding(vertical = 10.dp),
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        )
+
+        Box(
+            modifier = Modifier.fillMaxSize()
+                .graphicsLayer {
+                    translationX = animatedTranslationX
+                    scaleX = animatedScale
+                    scaleY = animatedScale
+                    shape = RoundedCornerShape(animatedCornerRadius)
+                    clip = true
+                }
         ) {
-            IconButton(onClick = {}) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_nav_menu),
-                    contentDescription = null,
-                    modifier = Modifier.size(33.dp, 21.dp)
-                )
-            }
-
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .statusBarsPadding()
             ) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_my_location),
-                    contentDescription = null,
-                    modifier = Modifier.height(20.dp),
-                    tint = OrangeMain
-                )
-
-                Text(
-                    text = "Dhaka, Bangladesh",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 14.sp,
-                    fontFamily = getNunitoFont(),
-                    fontWeight = FontWeight.Light,
+                Row(
                     modifier = Modifier
-                        .align(CenterVertically)
-                )
-            }
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(horizontal = 16.dp)
+                        .padding(vertical = 10.dp),
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    IconButton(onClick = {
+                        if (drawerState == DrawerState.OPEN) {
+                            drawerState = DrawerState.CLOSED
+                        } else {
+                            drawerState = DrawerState.OPEN
+                        }
+                    }) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_nav_menu),
+                            contentDescription = null,
+                            modifier = Modifier.size(33.dp, 21.dp),
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
 
-            Image(
-                painter = painterResource(Res.drawable.ic_person),
-                contentDescription = null,
-                modifier = Modifier.size(50.dp)
-                    .clip(CircleShape)
-                    .border(
-                        brush = Brush.verticalGradient(
-                            listOf(
-                                Color(0xFF6B3A99),
-                                Color(0xFFFF7043)
-                            )
-                        ),
-                        shape = CircleShape,
-                        width = 2.dp
-                    ),
-                contentScale = ContentScale.FillBounds
-            )
-        }
+                    Row(
+                        verticalAlignment = CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_my_location),
+                            contentDescription = null,
+                            modifier = Modifier.height(20.dp),
+                            tint = OrangeMain
+                        )
+
+                        Text(
+                            text = "Dhaka, Bangladesh",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 14.sp,
+                            fontFamily = getNunitoFont(),
+                            fontWeight = FontWeight.Light,
+                            modifier = Modifier
+                                .align(CenterVertically)
+                        )
+                    }
+
+                    Image(
+                        painter = painterResource(Res.drawable.ic_person),
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp)
+                            .clip(CircleShape)
+                            .border(
+                                brush = Brush.verticalGradient(
+                                    listOf(
+                                        Color.Gray,
+                                        OrangeMain
+                                    )
+                                ),
+                                shape = CircleShape,
+                                width = 2.dp
+                            ),
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
 
 
 
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            item(key = "home_search") {
-                var searchQuery by remember { mutableStateOf("") }
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    item(key = "home_search") {
+                        var searchQuery by remember { mutableStateOf("") }
 
-                HomeSearchBar(
-                    text = searchQuery,
-                    onTextChange = { searchQuery = it },
-                    onSearchClick = { /* Handle search action */ }
-                )
-            }
-            item(key = "home_category") {
-                HomeCategorySection()
-            }
+                        HomeSearchBar(
+                            text = searchQuery,
+                            onTextChange = { searchQuery = it },
+                            onSearchClick = { /* Handle search action */ }
+                        )
+                    }
+                    item(key = "home_category") {
+                        HomeCategorySection()
+                    }
 
-            item(
-                key = "most_rated_section"
-            ) {
-                MostRatedSection()
-            }
+                    item(
+                        key = "most_rated_section"
+                    ) {
+                        MostRatedSection()
+                    }
 
-            item(key = "trending_section") {
-                TrendingSection()
+                    item(key = "trending_section") {
+                        TrendingSection()
+                    }
+                }
             }
         }
     }
+
+
 }
 
 @Composable

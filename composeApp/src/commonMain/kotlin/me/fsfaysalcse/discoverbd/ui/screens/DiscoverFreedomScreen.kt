@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import discoverbangladesh.composeapp.generated.resources.Res
+import discoverbangladesh.composeapp.generated.resources.bg_drawer
 import discoverbangladesh.composeapp.generated.resources.bg_splash
 import discoverbangladesh.composeapp.generated.resources.ic_double_arrow
 import me.fsfaysalcse.discoverbd.ui.theme.OrangeMain

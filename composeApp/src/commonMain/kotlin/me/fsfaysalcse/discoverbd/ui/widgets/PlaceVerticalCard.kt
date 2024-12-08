@@ -1,6 +1,5 @@
 package me.fsfaysalcse.discoverbd.ui.widgets
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +36,6 @@ import me.fsfaysalcse.discoverbd.ui.model.Place
 import me.fsfaysalcse.discoverbd.ui.theme.OrangeMain
 import me.fsfaysalcse.discoverbd.ui.theme.getOpenSansFont
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PlaceVerticalCard(
@@ -80,7 +78,7 @@ fun PlaceVerticalCard(
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = getOpenSansFont(),
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                                color = MaterialTheme.colorScheme.onSurface
                             ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -89,7 +87,7 @@ fun PlaceVerticalCard(
                         Text(
                             text = "📍 ${place.distance}",
                             style = MaterialTheme.typography.bodySmall.copy(
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontFamily = getOpenSansFont()
                             )
                         )
