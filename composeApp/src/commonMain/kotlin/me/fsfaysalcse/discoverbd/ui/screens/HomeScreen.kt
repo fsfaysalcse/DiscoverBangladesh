@@ -1,10 +1,14 @@
 package me.fsfaysalcse.discoverbd.ui.screens
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.calculateTargetValue
+import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -45,10 +50,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import discoverbangladesh.composeapp.generated.resources.Res
+import discoverbangladesh.composeapp.generated.resources.ic_close_drawer
 import discoverbangladesh.composeapp.generated.resources.ic_my_location
 import discoverbangladesh.composeapp.generated.resources.ic_nav_menu
 import discoverbangladesh.composeapp.generated.resources.ic_person
+import kotlinx.coroutines.launch
 import me.fsfaysalcse.discoverbd.ui.model.CATEGORIES
 import me.fsfaysalcse.discoverbd.ui.model.DrawerState
 import me.fsfaysalcse.discoverbd.ui.model.PACES2
@@ -64,40 +72,77 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
 
-    var drawerState by remember {
-        mutableStateOf(DrawerState.OPEN)
-    }
+    val scope = rememberCoroutineScope()
+    var drawerState by remember { mutableStateOf(DrawerState.CLOSED) }
 
     val drawerWidth = 700f
 
-    val animatedTranslationX by animateFloatAsState(
-        targetValue = if (drawerState == DrawerState.OPEN) drawerWidth else 0f
-    )
+    val translationX = remember {
+        Animatable(0f)
+    }
 
-    val animatedScale by animateFloatAsState(
-        targetValue = if (drawerState == DrawerState.OPEN) 0.8f else 1f
-    )
+    translationX.updateBounds(0f, drawerWidth)
 
-    val animatedCornerRadius by animateDpAsState(
-        targetValue = if (drawerState == DrawerState.OPEN) 32.dp else 0.dp
-    )
+    val draggableState = rememberDraggableState(onDelta = { dragAmount ->
+        scope.launch {
+            translationX.snapTo(translationX.value + dragAmount)
+        }
+    })
+
+    val decay = rememberSplineBasedDecay<Float>()
 
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        DrawerScreen(
-            modifier = Modifier
-        )
+        DrawerScreen(modifier = Modifier)
 
         Box(
             modifier = Modifier.fillMaxSize()
                 .graphicsLayer {
-                    translationX = animatedTranslationX
-                    scaleX = animatedScale
-                    scaleY = animatedScale
-                    shape = RoundedCornerShape(animatedCornerRadius)
+                    this.translationX = translationX.value
+                    val scale = lerp(1f, 0.8f, translationX.value / drawerWidth)
+                    this.scaleX = scale
+                    this.scaleY = scale
+                    shape = RoundedCornerShape(30.dp)
                     clip = true
-                }
+                }.draggable(
+                    state = draggableState,
+                    orientation = Orientation.Horizontal,
+                    onDragStopped = { velocity: Float ->
+                        val decayX = decay.calculateTargetValue(
+                            translationX.value,
+                            velocity
+                        )
+                        scope.launch {
+                            val targetX = if (decayX > drawerWidth * 0.5f) {
+                                drawerWidth
+                            } else {
+                                0f
+                            }
+
+                            val canReachTargetWithDecay =
+                                (decayX > targetX && targetX == drawerWidth || (decayX < targetX && targetX == 0f))
+
+                            if (canReachTargetWithDecay) {
+                                translationX.animateDecay(
+                                    initialVelocity = velocity,
+                                    animationSpec = decay
+                                )
+                            } else {
+                                translationX.animateTo(
+                                    targetValue = targetX,
+                                    initialVelocity = velocity
+                                )
+                            }
+                            drawerState = if (targetX == drawerWidth) {
+                                DrawerState.OPEN
+                            } else {
+                                DrawerState.CLOSED
+                            }
+                        }
+
+                    }
+                )
         ) {
             Column(
                 modifier = Modifier
@@ -115,12 +160,27 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     IconButton(onClick = {
-                        if (drawerState == DrawerState.OPEN) {
-                            drawerState = DrawerState.CLOSED
-                        } else {
-                            drawerState = DrawerState.OPEN
+                        scope.launch {
+                            if (drawerState == DrawerState.OPEN) {
+                                translationX.animateTo(0f)
+                            } else {
+                                translationX.animateTo(drawerWidth)
+                            }
+                            drawerState = if (drawerState == DrawerState.OPEN) {
+                                DrawerState.CLOSED
+                            } else {
+                                DrawerState.OPEN
+                            }
                         }
-                    }) {
+                    }
+                    ) {
+
+                        val icon = if (drawerState == DrawerState.OPEN){
+                            Res.drawable.ic_close_drawer
+                        }else{
+                            Res.drawable.ic_nav_menu
+                        }
+
                         Icon(
                             painter = painterResource(Res.drawable.ic_nav_menu),
                             contentDescription = null,

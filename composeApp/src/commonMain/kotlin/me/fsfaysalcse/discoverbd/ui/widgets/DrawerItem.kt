@@ -63,7 +63,7 @@ fun DrawerItem(
                 .background(
                     color = OrangeMain,
                     shape = CircleShape
-                ).padding(15.dp),
+                ).padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -81,7 +81,7 @@ fun DrawerItem(
             fontFamily = getNunitoFont(),
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(start = 20.dp)
+                .padding(start = 13.dp)
                 .align(Alignment.CenterVertically)
         )
     }

@@ -109,7 +109,7 @@ fun DrawerScreen(
             horizontalAlignment = Alignment.Start
         ) {
             var selectedDrawerState by rememberSaveable {
-                mutableIntStateOf(2)
+                mutableIntStateOf(1)
             }
 
             Column(

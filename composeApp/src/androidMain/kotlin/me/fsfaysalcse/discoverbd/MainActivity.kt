@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppAndroidPreview() {
     DiscoverBangladeshTheme {
-        HomeScreen()
+        DrawerScreen()
     }
 
 }
